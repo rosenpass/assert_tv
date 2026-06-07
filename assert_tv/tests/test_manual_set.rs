@@ -2,7 +2,7 @@ use assert_tv::{
     initialize_tv_case_from_file, TestMode, TestValue, TestVector, TestVectorActive,
     TestVectorFileFormat, TestVectorNOP,
 };
-use rand::Rng;
+use rand::RngExt;
 use serde_json::{Map, Value};
 use std::io::Read;
 use std::path::Path;

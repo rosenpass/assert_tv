@@ -2,12 +2,12 @@
 entry_type = "Const"
 description = "a is a u64"
 name = "a"
-value = "6591674102444623042"
-code_location = "assert_tv/tests/test_manual_set.rs:70"
+value = "9676577879079315632"
+code_location = "tests/test_manual_set.rs:70"
 test_vec_set_code_location = "assert_tv/tests/test_manual_set.rs:32"
 
 [[entries]]
 entry_type = "Output"
-code_location = "assert_tv/tests/test_manual_set.rs:82"
+code_location = "tests/test_manual_set.rs:82"
 test_vec_set_code_location = "assert_tv/tests/test_manual_set.rs:50"
 offload = true
