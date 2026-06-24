@@ -163,6 +163,13 @@ Set via `#[test_vec_case(mode = "init" | "check")]` or the `TEST_MODE` environme
 
 Choose with `#[test_vec_case(format = "json" | "yaml" | "toml")]` or when calling `initialize_tv_case_from_file` directly.
 
+## Cargo Features
+
+The `assert_tv` crate has two features that are enabled by default:
+
+- **`tls`**: Store the active test-vector session in thread-local storage, so each test thread has its own isolated session and tests run in parallel. When disabled, a single global session is used and a process-wide lock serializes test cases.
+- **`zstd-offload`**: Compress offloaded values with zstd before writing their sidecar files. When disabled, offloaded values are written uncompressed.
+
 ## Notes
 
 - The default test vector path is `.test_vectors/<function_name>.<format>` when using `#[test_vec_case]`.

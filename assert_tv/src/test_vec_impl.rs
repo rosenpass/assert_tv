@@ -1,8 +1,8 @@
 use crate::{DynDeserializer, DynSerializer, TestMode, TestVectorFileFormat, TlsEnvGuard};
-use anyhow::{anyhow, bail, Context};
+use anyhow::{Context, anyhow, bail};
 use log::warn;
 use serde::{Deserialize, Serialize};
-use std::io::{Cursor, Read, Write};
+use std::io::{Read, Write};
 use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize, Debug, Clone, Eq, PartialEq)]
@@ -117,7 +117,10 @@ impl TestVectorData {
                 .read_to_end(&mut offloaded_value_bytes)
                 .map_err(|e| anyhow::anyhow!("Failed to read offloaded value file: {}", e))?;
             drop(offloaded_value_file);
+
+            #[cfg(feature = "zstd-offload")]
             let offloaded_value_bytes = decompress(offloaded_value_bytes)?;
+
             let offloaded_value: serde_json::value::Value =
                 serde_json::from_slice(&offloaded_value_bytes).map_err(|e| {
                     anyhow::anyhow!("Failed to parse offloaded value as a json value: {}", e)
@@ -142,7 +145,8 @@ impl TestVectorData {
                 anyhow::anyhow!("Failed to serialize value at index {}: {}", entry_index, e)
             })?;
 
-            let compressed = compress(serialized)?;
+            #[cfg(feature = "zstd-offload")]
+            let serialized = compress(serialized)?;
 
             let mut file = std::fs::File::create(&offloaded_path).map_err(|e| {
                 anyhow::anyhow!(
@@ -152,7 +156,7 @@ impl TestVectorData {
                 )
             })?;
 
-            file.write_all(&compressed).map_err(|e| {
+            file.write_all(&serialized).map_err(|e| {
                 anyhow::anyhow!(
                     "Failed to write to offloaded value file at {:?}: {}",
                     offloaded_path,
@@ -394,14 +398,16 @@ fn append_suffix_to_filename(path: &PathBuf, suffix: &str) -> PathBuf {
     path
 }
 
+#[cfg(feature = "zstd-offload")]
 fn decompress(data: Vec<u8>) -> anyhow::Result<Vec<u8>> {
-    let cursor = Cursor::new(data);
+    let cursor = std::io::Cursor::new(data);
     let decompressed = zstd::decode_all(cursor)?;
     Ok(decompressed)
 }
 
+#[cfg(feature = "zstd-offload")]
 fn compress(data: Vec<u8>) -> anyhow::Result<Vec<u8>> {
-    let cursor = Cursor::new(data);
+    let cursor = std::io::Cursor::new(data);
     let compressed = zstd::encode_all(cursor, 15)?;
     Ok(compressed)
 }
