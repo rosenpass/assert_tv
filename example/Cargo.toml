@@ -1,13 +1,13 @@
 [package]
 name = "example"
 version = "0.3.0"
-edition = "2021"
+edition.workspace = true
 
 [features]
 default = []
 
 [dependencies]
-assert_tv = { path = "../assert_tv" }
-anyhow = "1.0.95"
-serde_json = "1.0.138"
+assert_tv.workspace = true
+anyhow.workspace = true
+serde_json.workspace = true
 
