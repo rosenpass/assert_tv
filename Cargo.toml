@@ -3,7 +3,7 @@ resolver = "2"
 members = ["assert_tv", "assert_tv_macros", "example"]
 
 [workspace.package]
-version = "0.6.7"
+version = "0.6.8"
 categories = ["development-tools", "development-tools::testing"]
 authors = ["Amin Faez <amin.faez.inbox@gmail.com>"]
 description = "De-randomized detereministic tests with test-vectors"
@@ -15,8 +15,8 @@ keywords = ["macro", "test", "test-driven", "test-helpers", "test-vectors"]
 
 [workspace.dependencies]
 # Internal crates
-assert_tv = { path = "assert_tv", version = "0.6.7" }
-assert_tv_macros = { path = "assert_tv_macros", version = "0.6.7" }
+assert_tv = { path = "assert_tv", version = "0.6.8" }
+assert_tv_macros = { path = "assert_tv_macros", version = "0.6.8" }
 
 # External crates
 serde = { version = "1.x", features = ["derive"] }
