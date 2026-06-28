@@ -162,5 +162,12 @@ fn test_manual_set() {
 
     // delete manual_tv.toml
     std::fs::remove_file(tv_file_path).unwrap();
-    std::fs::remove_file(Path::new("manual_tv.toml_offloaded_value_1.zstd")).unwrap()
+    #[cfg(feature = "zstd-offload")]
+    let offloaded_ext = "zstd";
+    #[cfg(not(feature = "zstd-offload"))]
+    let offloaded_ext = "bin";
+    std::fs::remove_file(Path::new(&format!(
+        "manual_tv.toml_offloaded_value_1.{offloaded_ext}"
+    )))
+    .unwrap()
 }

@@ -5,6 +5,12 @@ use serde::{Deserialize, Serialize};
 use std::io::{Read, Write};
 use std::path::PathBuf;
 
+/// File extension for offloaded sidecar values
+#[cfg(feature = "zstd-offload")]
+const OFFLOAD_EXT: &str = "zstd";
+#[cfg(not(feature = "zstd-offload"))]
+const OFFLOAD_EXT: &str = "bin";
+
 #[derive(Serialize, Deserialize, Debug, Clone, Eq, PartialEq)]
 pub struct TestVectorEntry {
     entry_type: TestVectorEntryType,
@@ -102,7 +108,7 @@ impl TestVectorData {
             }
             let offloaded_path = append_suffix_to_filename(
                 &tv_file_path,
-                format!("_offloaded_value_{}.zstd", entry_index).as_str(),
+                format!("_offloaded_value_{}.{}", entry_index, OFFLOAD_EXT).as_str(),
             );
             let mut offloaded_value_file =
                 std::fs::File::open(offloaded_path.clone()).map_err(|e| {
@@ -138,7 +144,7 @@ impl TestVectorData {
 
             let offloaded_path = append_suffix_to_filename(
                 &tv_file_path,
-                format!("_offloaded_value_{}.zstd", entry_index).as_str(),
+                format!("_offloaded_value_{}.{}", entry_index, OFFLOAD_EXT).as_str(),
             );
 
             let serialized = serde_json::to_vec(&entry.value).map_err(|e| {
