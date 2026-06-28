@@ -98,8 +98,7 @@ Annotate fields with `#[test_vec(...)]` to control metadata and serialization:
 - **description**: longer description (string)
 - **serialize_with**: path to `fn(&T) -> anyhow::Result<serde_json::Value>`
 - **deserialize_with**: path to `fn(&serde_json::Value) -> anyhow::Result<T>`
-- **offload**: `true` to keep large data out of the main file; values are written to `"<file>_offloaded_value_<index>.zstd"` and the main file stores `null` for that entry
-
+- **offload**: `true` to keep large data out of the main file; values are written to `"<file>_offloaded_value_<index>.<ext>"`
 Example:
 
 ```rust
@@ -163,17 +162,9 @@ Set via `#[test_vec_case(mode = "init" | "check")]` or the `TEST_MODE` environme
 
 Choose with `#[test_vec_case(format = "json" | "yaml" | "toml")]` or when calling `initialize_tv_case_from_file` directly.
 
-## Notes
+## Cargo Features
 
-- The default test vector path is `.test_vectors/<function_name>.<format>` when using `#[test_vec_case]`.
-- Values marked `offload = true` are stored next to the main file and compressed with zstd.
-- Custom serializers/deserializers let you normalize or prettify complex types before persistence.
+The `assert_tv` crate has two features that are enabled by default:
 
-```rust
-// production code:
-let a = &mut vec![0;8];
-a[..4].copy_from_slice(
-    &[rand::random::<u8>(), rand::random::<u8>(), rand::random::<u8>(), rand::random::<u8>()]
-);
-// tv integration:
-```
+- **`tls`**: Store the active test-vector session in thread-local storage, so each test thread has its own isolated session and tests run in parallel. When disabled, a single global session is used and a process-wide lock serializes test cases.
+- **`zstd-offload`**: Compress offloaded values with zstd before writing their sidecar files. When disabled, offloaded values are written uncompressed.

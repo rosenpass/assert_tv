@@ -5,9 +5,12 @@ edition.workspace = true
 
 [features]
 default = []
+# Forwarding features so the example can be tested against feature combinations 
+tls = ["assert_tv/tls"]
+zstd-offload = ["assert_tv/zstd-offload"]
 
 [dependencies]
-assert_tv.workspace = true
+assert_tv = { path = "../assert_tv", default-features = false }
 anyhow.workspace = true
 serde_json.workspace = true
 

@@ -11,8 +11,11 @@ categories.workspace = true
 keywords.workspace = true
 
 [features]
+default = ["tls", "zstd-offload"]
+# Enable zstd compression when offloading
+zstd-offload = ["dep:zstd"]
+# Use thread local storage for test-vector
 tls = []
-default = ["tls"]
 
 [dependencies]
 serde.workspace = true
@@ -22,7 +25,7 @@ anyhow.workspace = true
 serde_yaml.workspace = true
 toml.workspace = true
 assert_tv_macros.workspace = true
-zstd.workspace = true
+zstd = { workspace = true, optional = true }
 base64.workspace = true
 
 [dev-dependencies]

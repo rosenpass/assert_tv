@@ -1,7 +1,8 @@
 use assert_tv::{
-    initialize_tv_case_from_file, TestMode, TestValue, TestVector, TestVectorActive,
-    TestVectorFileFormat, TestVectorNOP,
+    TestMode, TestValue, TestVector, TestVectorActive, TestVectorFileFormat, TestVectorNOP,
 };
+#[cfg(feature = "tls")]
+use assert_tv::initialize_tv_case_from_file;
 use rand::RngExt;
 use serde_json::{Map, Value};
 use std::io::Read;
@@ -89,13 +90,19 @@ fn test_manual_set() {
         TestVectorFileFormat::Toml,
         TestMode::Init,
     );
-    let should_be_err = initialize_tv_case_from_file(
-        "manual_tv.toml",
-        TestVectorFileFormat::Toml,
-        TestMode::Init,
-    );
-    if should_be_err.is_ok() {
-        panic!("Should not be able to initialize manual_tv.toml again");
+    // The global (non-`tls`) backend serializes sessions via a non-reentrant
+    // lock, so a second init on the same thread would deadlock rather than
+    // return an error. Only the `tls` backend rejects double-init outright.
+    #[cfg(feature = "tls")]
+    {
+        let should_be_err = initialize_tv_case_from_file(
+            "manual_tv.toml",
+            TestVectorFileFormat::Toml,
+            TestMode::Init,
+        );
+        if should_be_err.is_ok() {
+            panic!("Should not be able to initialize manual_tv.toml again");
+        }
     }
 
     let a = some_functionality_with_internal_randomness::<TestVectorActive>();
@@ -154,5 +161,13 @@ fn test_manual_set() {
     some_other_functionality::<TestVectorNOP>(a);
 
     // delete manual_tv.toml
-    // std::fs::remove_file(tv_file_path).unwrap()
+    std::fs::remove_file(tv_file_path).unwrap();
+    #[cfg(feature = "zstd-offload")]
+    let offloaded_ext = "zstd";
+    #[cfg(not(feature = "zstd-offload"))]
+    let offloaded_ext = "bin";
+    std::fs::remove_file(Path::new(&format!(
+        "manual_tv.toml_offloaded_value_1.{offloaded_ext}"
+    )))
+    .unwrap()
 }
