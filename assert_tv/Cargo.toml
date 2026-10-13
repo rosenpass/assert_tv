@@ -9,7 +9,7 @@ readme.workspace = true
 repository.workspace = true
 categories.workspace = true
 keywords.workspace = true
-rust-version = "1.85.1"
+rust-version = "1.88.0"
 
 [features]
 default = ["tls", "zstd-offload"]
