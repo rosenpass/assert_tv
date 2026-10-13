@@ -1,5 +1,11 @@
 # assert_tv: Deterministic tests with external test vectors
 
+[![GitHub Release](https://badges.islabtech.com/shields-io/github/v/release/rosenpass/assert_tv?sort=semver&color=blue)](https://github.com/rosenpass/assert_tv/releases/latest)
+[![crates.io](https://badges.islabtech.com/shields-io/crates/v/assert_tv.svg?sort=semver&color=blue)](https://crates.io/crates/assert_tv)
+[![MIT licensed](https://badges.islabtech.com/shields-io/github/license/rosenpass/assert_tv?color=blue)](https://github.com/rosenpass/assert_tv)
+![Build](https://badges.islabtech.com/shields-io/github/actions/workflow/status/rosenpass/assert_tv/cargo.yml?label=CI)
+[![docs.rs](https://badges.islabtech.com/shields-io/docsrs/assert_tv/latest)](https://docs.rs/assert_tv)
+
 assert_tv helps you capture, persist, and validate test vectors so that non-deterministic code (randomness, time, OS input) can be tested deterministically. It generates a file alongside your tests, recording inputs (“consts”) and outputs, and then replays and verifies them on subsequent runs.
 
 This README documents the current API and usage based on the latest changes applied in downstream projects.
