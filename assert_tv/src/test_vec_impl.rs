@@ -73,7 +73,7 @@ impl TestVectorData {
                     e
                 )
             })?,
-            TestVectorFileFormat::Yaml => serde_yaml::from_reader(tv_file).map_err(|e| {
+            TestVectorFileFormat::Yaml => yaml_serde::from_reader(tv_file).map_err(|e| {
                 anyhow::anyhow!(
                     "Failed to parse test vector file ({:?}) as yaml: {}",
                     tv_file_path,
@@ -196,7 +196,7 @@ impl TestVectorData {
         match file_format {
             TestVectorFileFormat::Json => serde_json::to_writer_pretty(tv_file, &self)
                 .map_err(|e| anyhow::anyhow!("Failed to write test vector file as json: {}", e))?,
-            TestVectorFileFormat::Yaml => serde_yaml::to_writer(tv_file, &self)
+            TestVectorFileFormat::Yaml => yaml_serde::to_writer(tv_file, &self)
                 .map_err(|e| anyhow::anyhow!("Failed to write test vector file as yaml: {}", e))?,
             TestVectorFileFormat::Toml => {
                 let tv_serialized: String = toml::to_string(&self).map_err(|e| {
