@@ -2,7 +2,7 @@
 
 [![GitHub Release](https://badges.islabtech.com/shields-io/github/v/release/rosenpass/assert_tv?sort=semver&color=blue)](https://github.com/rosenpass/assert_tv/releases/latest)
 [![crates.io](https://badges.islabtech.com/shields-io/crates/v/assert_tv.svg?sort=semver&color=blue)](https://crates.io/crates/assert_tv)
-[![MIT licensed](https://badges.islabtech.com/shields-io/github/license/rosenpass/assert_tv?color=blue)](https://github.com/rosenpass/assert_tv)
+![Apache2/MIT licensed](https://badges.islabtech.com/shields-io/badge/license-Apache2.0/MIT-blue.svg)
 ![Build](https://badges.islabtech.com/shields-io/github/actions/workflow/status/rosenpass/assert_tv/cargo.yml?label=CI)
 [![docs.rs](https://badges.islabtech.com/shields-io/docsrs/assert_tv/latest)](https://docs.rs/assert_tv)
 
