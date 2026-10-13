@@ -1,0 +1,77 @@
+name: Cargo
+
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+  schedule:
+    - cron: "12 04 * * MON"
+      timezone: "Europe/Berlin"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # example: https://doc.rust-lang.org/cargo/guide/continuous-integration.html#github-actions
+  build:
+    name: build
+    runs-on: ubicloud-standard-2
+    strategy:
+      matrix:
+        toolchain:
+          - stable
+          - beta
+          - nightly
+    steps:
+      - uses: actions/checkout@v7
+      - run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
+      - run: cargo build --all-features --verbose
+
+  test:
+    name: test
+    runs-on: ubicloud-standard-2
+    strategy:
+      matrix:
+        toolchain:
+          - stable
+          - beta
+          - nightly
+    steps:
+      - uses: actions/checkout@v7
+      - run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
+      - run: cargo test --all-features --verbose
+
+  # example: https://doc.rust-lang.org/cargo/guide/continuous-integration.html#verifying-latest-dependencies
+  latest-dependencies:
+    name: latest dependencies
+    runs-on: ubicloud-standard-2
+    continue-on-error: true
+    env:
+      CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS: allow
+    steps:
+      - uses: actions/checkout@v7
+      - run: rustup update stable && rustup default stable
+      - run: cargo update --verbose
+      - run: cargo build --all-features --verbose
+      - run: cargo test --all-features --verbose
+
+  # example: https://doc.rust-lang.org/cargo/guide/continuous-integration.html#verifying-rust-version
+  verify-rust-version:
+    name: verify rust-version
+    runs-on: ubicloud-standard-2
+    steps:
+      - uses: actions/checkout@v7
+      - uses: taiki-e/install-action@cargo-hack
+      - run: cargo hack check --rust-version --workspace --all-targets --ignore-private
+
+  # example: https://doc.rust-lang.org/cargo/guide/continuous-integration.html#checking-for-warnings
+  warnings:
+    runs-on: ubicloud-standard-2
+    continue-on-error: true
+    env:
+      CARGO_BUILD_WARNINGS: deny
+    steps:
+      - uses: actions/checkout@v7
+      - run: rustup update stable && rustup default stable
+      - run: rustup component add clippy
+      - run: cargo clippy --all-targets --all-features --keep-going
