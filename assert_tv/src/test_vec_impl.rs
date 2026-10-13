@@ -3,7 +3,7 @@ use anyhow::{Context, anyhow, bail};
 use log::warn;
 use serde::{Deserialize, Serialize};
 use std::io::{Read, Write};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 /// File extension for offloaded sidecar values
 #[cfg(feature = "zstd-offload")]
@@ -395,8 +395,8 @@ fn is_false(v: &bool) -> bool {
     !*v
 }
 
-fn append_suffix_to_filename(path: &PathBuf, suffix: &str) -> PathBuf {
-    let mut path = path.clone();
+fn append_suffix_to_filename(path: &Path, suffix: &str) -> PathBuf {
+    let mut path = path.to_owned();
     if let Some(file_name) = path.file_name().map(|f| f.to_string_lossy()) {
         let new_file_name = format!("{}{}", file_name, suffix);
         path.set_file_name(new_file_name);

@@ -74,7 +74,7 @@ fn some_functionality_with_internal_randomness<TV: TestVector>() -> u64 {
 
 fn some_other_functionality<TV: TestVector>(a: u64) {
     let test_fields = TV::initialize_values::<SomeTestFields>();
-    let y: bool = a % 2 == 0;
+    let y: bool = a.is_multiple_of(2);
     let b = if y {
         "abc".to_string()
     } else {

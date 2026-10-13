@@ -15,7 +15,7 @@ fn c1<TV: TestVector>(x1: i32, x2: i32) -> i32 {
     let fields: Fields = TV::initialize_values();
     let m: i32 = x1*5;
     let m: i32 = TV::expose_value(&fields.m, m);
-    return m - x2;
+    m - x2
 }
 
 #[cfg(test)]
