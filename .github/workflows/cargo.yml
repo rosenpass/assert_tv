@@ -13,33 +13,22 @@ env:
 
 jobs:
   # example: https://doc.rust-lang.org/cargo/guide/continuous-integration.html#github-actions
-  build:
-    name: build
+  build-and-test:
+    name: ${{ matrix.command }} (${{ matrix.toolchain}})
     runs-on: ubicloud-standard-2
     strategy:
       matrix:
-        toolchain:
-          - stable
-          - beta
-          - nightly
+        toolchain: [stable, beta, nightly]
+        command: [build, test, "test feature combinations"]
     steps:
       - uses: actions/checkout@v7
       - run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
       - run: cargo build --all-features --verbose
-
-  test:
-    name: test
-    runs-on: ubicloud-standard-2
-    strategy:
-      matrix:
-        toolchain:
-          - stable
-          - beta
-          - nightly
-    steps:
-      - uses: actions/checkout@v7
-      - run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
+        if: ${{ matrix.command == 'build' }}
       - run: cargo test --all-features --verbose
+        if: ${{ matrix.command == 'test' }}
+      - run: ./cargo-test-feature-combinations.sh
+        if: ${{ matrix.command == 'test feature combinations' }}
 
   # example: https://doc.rust-lang.org/cargo/guide/continuous-integration.html#verifying-latest-dependencies
   latest-dependencies:
