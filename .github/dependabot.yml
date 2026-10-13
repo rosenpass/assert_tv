@@ -1,0 +1,33 @@
+# documentation: https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference
+
+version: 2
+updates:
+  - package-ecosystem: "cargo"
+    directory: "/"
+    schedule:
+      interval: "cron"
+      cronjob: "12 4 * * MON" # 4:12 in the morning once per week
+      timezone: "Europe/Berlin"
+    allow:
+      - dependency-type: "all" # update both Cargo.toml and Cargo.lock
+    cooldown:
+      default-days: 5
+    groups:
+      # group patches for better visibility
+      weekly-cargo-patches:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+
+  # upgrade all GitHub Actions once per week
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:23"
+      timezone: "Europe/Berlin"
+    cooldown:
+      default-days: 3
