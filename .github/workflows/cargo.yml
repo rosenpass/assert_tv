@@ -2,8 +2,8 @@ name: Cargo
 
 on:
   push:
+    branches: [master]
   pull_request:
-    types: [opened, reopened]
   schedule:
     - cron: "12 04 * * MON"
       timezone: "Europe/Berlin"
