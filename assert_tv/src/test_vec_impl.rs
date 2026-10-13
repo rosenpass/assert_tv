@@ -3,7 +3,7 @@ use anyhow::{Context, anyhow, bail};
 use log::warn;
 use serde::{Deserialize, Serialize};
 use std::io::{Read, Write};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 /// File extension for offloaded sidecar values
 #[cfg(feature = "zstd-offload")]
@@ -275,6 +275,10 @@ pub fn finalize_tv_case() -> anyhow::Result<()> {
 /// Low‑level: process the next observed entry.
 ///
 /// This is used internally by `TestVector::{expose_value, expose_mut_value, check_value}`.
+///
+/// The clippy warning `too_many_argument` is disabled because this is function only used internally.
+/// There is a tracking issue for this warning: https://github.com/rosenpass/assert_tv/issues/20
+#[allow(clippy::too_many_arguments)]
 pub fn process_next_entry<O>(
     entry_type: TestVectorEntryType,
     description: Option<String>,
@@ -395,8 +399,8 @@ fn is_false(v: &bool) -> bool {
     !*v
 }
 
-fn append_suffix_to_filename(path: &PathBuf, suffix: &str) -> PathBuf {
-    let mut path = path.clone();
+fn append_suffix_to_filename(path: &Path, suffix: &str) -> PathBuf {
+    let mut path = path.to_owned();
     if let Some(file_name) = path.file_name().map(|f| f.to_string_lossy()) {
         let new_file_name = format!("{}{}", file_name, suffix);
         path.set_file_name(new_file_name);

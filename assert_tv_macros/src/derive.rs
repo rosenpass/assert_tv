@@ -182,12 +182,11 @@ fn opt_bool_default_false(opt: &Option<bool>) -> proc_macro2::TokenStream {
 
 /// Verify the field is of type `TestValue<...>`
 fn ensure_test_value_type(ty: &Type) -> syn::Result<()> {
-    if let Type::Path(p) = ty {
-        if let Some(seg) = p.path.segments.last() {
-            if seg.ident == "TestValue" {
-                return Ok(());
-            }
-        }
+    if let Type::Path(p) = ty
+        && let Some(seg) = p.path.segments.last()
+        && seg.ident == "TestValue"
+    {
+        return Ok(());
     }
     Err(Error::new_spanned(
         ty,

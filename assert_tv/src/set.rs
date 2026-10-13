@@ -105,7 +105,7 @@ pub trait TestVector {
             pretty_location_file(caller_location.file()),
             caller_location.line()
         ));
-        let value = crate::process_next_entry(
+        crate::process_next_entry(
             crate::TestVectorEntryType::Const,
             test_vec_field.description.clone(),
             test_vec_field.name.clone(),
@@ -121,8 +121,7 @@ pub trait TestVector {
             test_vec_field.offload,
         )
         .expect("Error processing observed test vector value")
-        .expect("Unexpected error processing observed test vector const: no value was loaded");
-        value
+        .expect("Unexpected error processing observed test vector const: no value was loaded")
     }
 
     #[inline(always)]
