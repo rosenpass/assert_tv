@@ -275,6 +275,10 @@ pub fn finalize_tv_case() -> anyhow::Result<()> {
 /// Low‑level: process the next observed entry.
 ///
 /// This is used internally by `TestVector::{expose_value, expose_mut_value, check_value}`.
+///
+/// The clippy warning `too_many_argument` is disabled because this is function only used internally.
+/// There is a tracking issue for this warning: https://github.com/rosenpass/assert_tv/issues/20
+#[allow(clippy::too_many_arguments)]
 pub fn process_next_entry<O>(
     entry_type: TestVectorEntryType,
     description: Option<String>,
