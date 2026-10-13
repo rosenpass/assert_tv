@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.6.9 (2026-10-13)
+
+### Fixes
+
+- update `repository` URL in `Cargo.toml`
+- update `Cargo.toml` `authors` field (add Karolin Varner)
+- fix license text files and `README.md` to reflect dual license (Apache 2 / MIT)
+
 ## v0.6.8 (2026-10-13)
 
 ### Fixes
