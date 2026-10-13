@@ -5,7 +5,7 @@ members = ["assert_tv", "assert_tv_macros", "example"]
 [workspace.package]
 version = "0.6.8"
 categories = ["development-tools", "development-tools::testing"]
-authors = ["Amin Faez <amin.faez.inbox@gmail.com>"]
+authors = ["Amin Faez <amin.faez.inbox@gmail.com>", "Karolin Varner <karo@rosenpass.eu>"]
 description = "De-randomized detereministic tests with test-vectors"
 edition = "2024"
 license = "MIT OR Apache-2.0"
