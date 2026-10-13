@@ -10,7 +10,7 @@ description = "De-randomized detereministic tests with test-vectors"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/aminfa/assert_tv"
+repository = "https://github.com/rosenpass/assert_tv"
 keywords = ["macro", "test", "test-driven", "test-helpers", "test-vectors"]
 
 [workspace.dependencies]
