@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.6.10 (2026-10-28)
+
+### Fixes
+
+- upgrade dependencies
+- make dependency version requirements in `Cargo.toml` more specific
+
 ## v0.6.9 (2026-10-13)
 
 ### Fixes
